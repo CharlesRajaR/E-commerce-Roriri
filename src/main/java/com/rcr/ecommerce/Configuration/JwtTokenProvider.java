@@ -1,5 +1,6 @@
 package com.rcr.ecommerce.Configuration;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.Authentication;
@@ -36,5 +37,13 @@ public class JwtTokenProvider {
             auths.add(authority.getAuthority());
         }
         return String.join(",",auths);
+    }
+
+    public String findEmailByJwtToken(String jwt){
+        String jwt1 = jwt.substring(7);
+        Claims claims = Jwts.parser().setSigningKey(key).build().parseClaimsJws(jwt1).getBody();
+        String email = String.valueOf(claims.get("email"));
+
+        return email;
     }
 }

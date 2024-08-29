@@ -6,29 +6,30 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.time.LocalDateTime;
 
+@Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-public class Product {
+@Table(name = "o_items")
+public class OrderItems {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
-
-    @Column(length = 1000)
-    private List<String> images;
-
-    private int price;
-
-    private int quantity;
-    private String description;
-
     @ManyToOne
-    @JoinColumn(name = "store_id")
+    @JoinColumn(name = "order_id")
+    private Order order;
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
+    @ManyToOne
+    @JoinColumn(name= "store_id")
     @JsonIgnore
     private ProductStore store;
+    private Long quantity;
+    private Long totalPrice;
+
+    private LocalDateTime createdAt;
 }

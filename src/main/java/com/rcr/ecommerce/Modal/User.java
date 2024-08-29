@@ -23,6 +23,7 @@ public class User {
     private String name;
 
     @Column(nullable = false)
+    @JsonIgnore
     private String password;
 
     @Column(nullable = false, unique = true)
@@ -32,14 +33,12 @@ public class User {
     private String phoneNumber;
 
     private USER_ROLE role;
-    @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer", orphanRemoval = true)
-    private List<Order> orders = new ArrayList<>();
+
 
     @ElementCollection
     private List<ProductDto> favourites = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Address> addresses = new ArrayList<>();
 
 }

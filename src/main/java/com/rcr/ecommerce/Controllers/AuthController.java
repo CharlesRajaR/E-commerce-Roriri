@@ -1,8 +1,10 @@
 package com.rcr.ecommerce.Controllers;
 
 import com.rcr.ecommerce.Configuration.JwtTokenProvider;
+import com.rcr.ecommerce.Modal.Cart;
 import com.rcr.ecommerce.Modal.USER_ROLE;
 import com.rcr.ecommerce.Modal.User;
+import com.rcr.ecommerce.Repository.CartRepository;
 import com.rcr.ecommerce.Repository.UserRepository;
 import com.rcr.ecommerce.Request.LoginRequest;
 import com.rcr.ecommerce.Response.AuthResponse;
@@ -29,6 +31,8 @@ import java.util.Collection;
 @RequestMapping("/auth")
 public class AuthController {
     @Autowired
+    private CartRepository cartRepository;
+    @Autowired
     private CustomUserDetailsService customUserDetailsService;
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
@@ -52,6 +56,13 @@ public class AuthController {
         createUser.setRole(user.getRole());
 
         User savedUser = userRepository.save(createUser);
+
+        if(savedUser.getRole() == USER_ROLE.ROLE_CUSTOMER){
+            Cart cart = new Cart();
+            cart.setCustomer(savedUser);
+            cartRepository.save(cart);
+        }
+
 
         Authentication authentication = new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
         SecurityContextHolder.getContext().setAuthentication(authentication);
