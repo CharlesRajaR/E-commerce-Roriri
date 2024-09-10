@@ -19,6 +19,8 @@ public class ProductStore {
     private Long id;
     private String name;
 
+    private String description;
+
     @Column(length = 1000)
     private List<String> images;
     @OneToOne

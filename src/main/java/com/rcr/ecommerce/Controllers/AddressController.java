@@ -49,4 +49,11 @@ public class AddressController {
 
         return new ResponseEntity<>(addresses, HttpStatus.OK);
     }
+    @DeleteMapping("/delete/address/{id}")
+    public ResponseEntity<String> deleteAddress(@RequestHeader("Authorization") String jwt,
+                                                @PathVariable Long id)throws Exception{
+        addressService.deleteAddress(id);
+
+        return new ResponseEntity<>("address with id: "+id+"deleted successfully", HttpStatus.OK);
+    }
 }

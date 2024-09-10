@@ -31,10 +31,20 @@ public class StoreController {
         store.setName(req.getName());
         store.setImages(req.getImages());
         store.setCreatedAt(LocalDateTime.now());
+        store.setDescription(req.getDescription());
 
         ProductStore createdStore = storeService.createStore(store);
 
         return new ResponseEntity<>(createdStore, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/owner")
+    public ResponseEntity<ProductStore> getUserStore(@RequestHeader("Authorization") String jwt)throws Exception{
+        User user = userService.findUserByJwtToken(jwt);
+
+        ProductStore store = storeService.getStoreByOwnerId(user.getId());
+
+        return new ResponseEntity<>(store, HttpStatus.OK);
     }
 
 }

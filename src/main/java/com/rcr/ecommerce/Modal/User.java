@@ -34,7 +34,8 @@ public class User {
 
     private USER_ROLE role;
 
-
+    @Column(length = 1000)
+    private String profilePicture;
     @ElementCollection
     private List<ProductDto> favourites = new ArrayList<>();
 

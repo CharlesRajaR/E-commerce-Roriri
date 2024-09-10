@@ -3,6 +3,7 @@ package com.rcr.ecommerce.Services;
 import com.rcr.ecommerce.Modal.*;
 import com.rcr.ecommerce.Repository.OrderItemRepository;
 import com.rcr.ecommerce.Repository.OrderRepository;
+import com.rcr.ecommerce.Repository.ProductRepository;
 import com.rcr.ecommerce.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,9 +23,11 @@ public class OrderServiceImpl implements OrderService{
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private ProductRepository productRepository;
 
     @Override
-    public Order createSingleOrder(Address address, Long userId, Long quantity,  Product product) throws Exception {
+    public Order createSingleOrder(Address address, Long userId, Long quantity,   Product product) throws Exception {
         Optional<User> user = userRepository.findById(userId);
         if(user.isEmpty()){
             throw new Exception("user is not found");
@@ -42,6 +45,7 @@ public class OrderServiceImpl implements OrderService{
         item.setQuantity(quantity);
         item.setTotalPrice(quantity * product.getPrice());
         item.setStore(product.getStore());
+        item.setOrderStatus("ORDERED");
 
         item.setCreatedAt(LocalDateTime.now());
         OrderItems savedItem = orderItemRepository.save(item);
@@ -71,7 +75,7 @@ public class OrderServiceImpl implements OrderService{
             item.setTotalPrice((long) cartItem.getPrice());
             item.setStore(cartItem.getProduct().getStore());
             item.setCreatedAt(LocalDateTime.now());
-
+            item.setOrderStatus("ORDERED");
             OrderItems savedItem = orderItemRepository.save(item);
         }
 
@@ -109,6 +113,27 @@ public class OrderServiceImpl implements OrderService{
         List<OrderItems> items = orderItemRepository.findByStoreId(storeId);
 
         return items;
+    }
+
+    @Override
+    public OrderItems updateOrderStatus(String orderStatus,Long orderItemId, Long productId) throws Exception {
+        Optional<OrderItems> item = orderItemRepository.findById(orderItemId);
+        if(item.isEmpty()){
+            throw new Exception("order item not found");
+        }
+        OrderItems orderItems = item.get();
+        if(orderStatus == "OUT_FOR_DELIVERY"){
+            Optional<Product> product = productRepository.findById(productId);
+            if(product.isEmpty()){
+                throw new Exception("product not found");
+            }
+            Product product1 = product.get();
+            product1.setQuantity((int) (product1.getQuantity() - orderItems.getQuantity()));
+            productRepository.save(product1);
+        }
+        orderItems.setOrderStatus(orderStatus);
+
+        return orderItemRepository.save(orderItems);
     }
 
 

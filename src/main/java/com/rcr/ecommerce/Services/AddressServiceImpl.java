@@ -21,6 +21,7 @@ public class AddressServiceImpl implements AddressService{
         createdAddress.setCountry(address.getCountry());
         createdAddress.setUser(address.getUser());
 
+
         Address savedAddress = addressRepository.save(createdAddress);
 
         return savedAddress;

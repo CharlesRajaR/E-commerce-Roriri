@@ -6,6 +6,8 @@ import com.rcr.ecommerce.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UserServiceImpl implements UserService{
     @Autowired
@@ -28,4 +30,18 @@ public class UserServiceImpl implements UserService{
         }
         return user;
     }
+
+    @Override
+    public User uploadProfilePicture(String image, Long id) throws Exception {
+        Optional<User> user = userRepository.findById(id);
+        if(user.isEmpty()){
+            throw new Exception("user not found");
+        }
+        User currentUser = user.get();
+        currentUser.setProfilePicture(image);
+
+        return userRepository.save(currentUser);
+    }
+
+
 }

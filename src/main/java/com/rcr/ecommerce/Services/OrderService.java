@@ -12,4 +12,6 @@ public interface OrderService {
     public List<Order> getUsersOrder(Long userId)throws Exception;
     public List<OrderItems> getItemsOfOrder(Long orderId)throws Exception;
     public List<OrderItems> getStoreOrder(Long storeId)throws Exception;
+
+    public OrderItems updateOrderStatus(String orderStatus,Long orderItemId, Long productId)throws Exception;
 }

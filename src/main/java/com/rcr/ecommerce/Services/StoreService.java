@@ -10,5 +10,6 @@ public interface StoreService {
     public void deleteStore(Long storeId)throws Exception;
 
     public ProductStore getStore(Long storeId)throws Exception;
+    public ProductStore getStoreByOwnerId(Long id)throws Exception;
     public List<ProductStore> getAllStore()throws Exception;
 }

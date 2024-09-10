@@ -19,6 +19,7 @@ public class StoreServiceImpl implements StoreService{
         createStore.setImages(store.getImages());
         createStore.setOwner(store.getOwner());
         createStore.setCreatedAt(store.getCreatedAt());
+        createStore.setDescription(store.getDescription());
 
         ProductStore savedStore = storeRepository.save(createStore);
         return savedStore;
@@ -32,6 +33,12 @@ public class StoreServiceImpl implements StoreService{
     @Override
     public ProductStore getStore(Long storeId) throws Exception {
         ProductStore store = findStore(storeId);
+        return store;
+    }
+
+    @Override
+    public ProductStore getStoreByOwnerId(Long id) throws Exception {
+        ProductStore store = storeRepository.findByOwnerId(id);
         return store;
     }
 

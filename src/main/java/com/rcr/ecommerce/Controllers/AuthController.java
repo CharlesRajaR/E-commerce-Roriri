@@ -7,6 +7,7 @@ import com.rcr.ecommerce.Modal.User;
 import com.rcr.ecommerce.Repository.CartRepository;
 import com.rcr.ecommerce.Repository.UserRepository;
 import com.rcr.ecommerce.Request.LoginRequest;
+import com.rcr.ecommerce.Request.RegisterRequest;
 import com.rcr.ecommerce.Response.AuthResponse;
 import com.rcr.ecommerce.Services.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +42,7 @@ public class AuthController {
     @Autowired
     private UserRepository userRepository;
     @PostMapping("/signup")
-    public ResponseEntity<AuthResponse> register(@RequestBody User user)throws Exception{
+    public ResponseEntity<AuthResponse> register(@RequestBody RegisterRequest user)throws Exception{
 
         User isExist = userRepository.findByEmail(user.getEmail());
         if(isExist != null){

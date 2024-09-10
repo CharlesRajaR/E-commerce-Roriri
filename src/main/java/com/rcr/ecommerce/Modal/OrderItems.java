@@ -30,6 +30,7 @@ public class OrderItems {
     private ProductStore store;
     private Long quantity;
     private Long totalPrice;
+    private String orderStatus;
 
     private LocalDateTime createdAt;
 }
